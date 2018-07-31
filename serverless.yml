@@ -1,0 +1,26 @@
+service: example
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: us-west-2
+  memorySize: 512
+  timeout: 10
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'ec2:CreateNetworkInterface'
+        - 'ec2:DescribeNetworkInterface'
+        - 'ec2:DeleteNetworkInterface'
+        - 'ec2:DetachNetworkInterface'
+      Resource: '*'
+
+functions:
+  proxy:
+    handler: lambda.handler
+    events:
+      - http:
+          path: '/{.+}'
+          method: any
+    environment:
+
