@@ -30,6 +30,18 @@ if (require.main === module) {
 
   exports.handler = (event, context, callback) => {
 
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    //construct the query string...blah
+    let query = '';
+    const queryString = event.queryStringParameters;
+    if (queryString) {
+      Object.keys(queryString).forEach((key) => {
+        query += key+'='+queryString[key]+'&';
+      });
+      query = '?'+query;
+    }
+
     // map lambda event
     const options = {
       method: event.httpMethod,
